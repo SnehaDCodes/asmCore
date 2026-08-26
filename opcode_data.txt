@@ -1,0 +1,101 @@
+Instruction Format Specification – IA-32 (32-bit Only)
+
+Team Name   |  AsmCore                                  
+------------+---------------------------------------------------
+GitHub Link | https://github.com/SnehaDCodes/asmCore.git
+Members     | Sneha Deshmukh - 25111055                          
+            | Abhishek Patare - 25111001                         
+            | Karan Ahire - 25111004                          
+            | Sangam Nirmal - 25111038                       
+
+
+1. Introduction
+This specification outlines the essential IA-32 machine-code encodings tailored for a two-pass assembler implementation, focusing exclusively on 32-bit registers and operand types. It details the structure of variable-length instructions and their constituent encoding fields, specifically:
+
+a. Opcode: Primary instruction identifier byte(s).
+b. ModR/M & SIB Bytes: Addressing mode, register specifiers, and scaled-index-base modifiers.
+c. Displacements & Immediates: Explicit 32-bit address offsets and immediate data constants.
+
+2. IA-32 Instruction Byte Diagram
+
+OPCODE    | ModR/M   | SIB      | DISPLACEMENT | IMMEDIATE
+----------+----------+----------+--------------+----------
+Mandatory | Optional | Optional | Optional     | Optional 
+
+Instruction layout: Opcode → ModR/M → SIB → Displacement → ImmediateInstruction layout: Opcode → ModR/M → SIB → Displacement → ImmediateInstruction layout: Opcode → ModR/M → SIB → Displacement → Immediate
+
+3. Encoding Field Meaning
+
+Field  | Meaning                                                                            
+-------+------------------------------------------------------------------------------------
+ModR/M | Contains MOD, REG and R/M fields and identifies 32-bit register or memory operands.
+SIB    | Scale-Index-Base byte used for complex 32-bit memory addressing.                   
++rd    | Used by B8+rd and similar 32-bit register opcode families.                         
+id     | 32-bit immediate.                                                                  
+cd     | 32-bit relative displacement.                                                      
+disp32 | 32-bit memory displacement.                                                        
+
+
+4. 32-bit Register Encoding Table
+
+Register | Code
+---------+-----
+EAX      | 000 
+ECX      | 001 
+EDX      | 010 
+EBX      | 011 
+ESP      | 100 
+EBP      | 101 
+ESI      | 110 
+EDI      | 111 
+
+5. Common IA-32 Opcode / Encoding Table (32-bit Only)
+
+===== TABLE START =====
+Instruction | Operands          | Opcode     | ModR/M   | Mod      | Reg (bits 3–5) | R/M      | +rd | SIB         | Immediate / Displacement
+------------+-------------------+------------+----------+----------+----------------+----------+-----+-------------+-------------------------
+MOV         | r/m32, r32        | 89 /r      | Required | variable | register code  | variable | —   | If required | —                       
+MOV         | r32, r/m32        | 8B /r      | Required | variable | register code  | variable | —   | If required | —                       
+MOV         | r/m32, imm32      | C7 /0 id   | Required | variable | 000            | variable | —   | If required | id                      
+MOV         | r32, imm32        | B8 + rd id | No       | —        | —              | —        | Yes | No          | id                      
+ADD         | r/m32, r32        | 01 /r      | Required | variable | register code  | variable | —   | If required | —                       
+ADD         | r32, r/m32        | 03 /r      | Required | variable | register code  | variable | —   | If required | —                       
+ADD         | r/m32, imm32      | 81 /0 id   | Required | variable | 000            | variable | —   | If required | id                      
+ADD         | EAX, imm32        | 05 id      | No       | —        | —              | —        | —   | No          | id                      
+SUB         | r/m32, r32        | 29 /r      | Required | variable | register code  | variable | —   | If required | —                       
+SUB         | r32, r/m32        | 2B /r      | Required | variable | register code  | variable | —   | If required | —                       
+SUB         | r/m32, imm32      | 81 /5 id   | Required | variable | 101            | variable | —   | If required | id                      
+SUB         | EAX, imm32        | 2D id      | No       | —        | —              | —        | —   | No          | id                      
+AND         | r/m32, r32        | 21 /r      | Required | variable | register code  | variable | —   | If required | —                       
+AND         | r32, r/m32        | 23 /r      | Required | variable | register code  | variable | —   | If required | —                       
+AND         | r/m32, imm32      | 81 /4 id   | Required | variable | 100            | variable | —   | If required | id                      
+OR          | r/m32, r32        | 09 /r      | Required | variable | register code  | variable | —   | If required | —                       
+OR          | r32, r/m32        | 0B /r      | Required | variable | register code  | variable | —   | If required | —                       
+OR          | r/m32, imm32      | 81 /1 id   | Required | variable | 001            | variable | —   | If required | id                      
+XOR         | r/m32, r32        | 31 /r      | Required | variable | register code  | variable | —   | If required | —                       
+XOR         | r32, r/m32        | 33 /r      | Required | variable | register code  | variable | —   | If required | —                       
+XOR         | r/m32, imm32      | 81 /6 id   | Required | variable | 110            | variable | —   | If required | id                      
+CMP         | r/m32, r32        | 39 /r      | Required | variable | register code  | variable | —   | If required | —                       
+CMP         | r32, r/m32        | 3B /r      | Required | variable | register code  | variable | —   | If required | —                       
+CMP         | r/m32, imm32      | 81 /7 id   | Required | variable | 111            | variable | —   | If required | id                      
+CMP         | EAX, imm32        | 3D id      | No       | —        | —              | —        | —   | No          | id                      
+NOT         | r/m32             | F7 /2      | Required | variable | 010            | variable | —   | If required | —                       
+MUL         | r/m32             | F7 /4      | Required | variable | 100            | variable | —   | If required | —                       
+IMUL        | r/m32             | F7 /5      | Required | variable | 101            | variable | —   | If required | —                       
+IMUL        | r32, r/m32        | 0F AF /r   | Required | variable | register code  | variable | —   | If required | —                       
+IMUL        | r32, r/m32, imm32 | 69 /r id   | Required | variable | register code  | variable | —   | If required | id                      
+DIV         | r/m32             | F7 /6      | Required | variable | 110            | variable | —   | If required | —                       
+INC         | r/m32             | FF /0      | Required | variable | 000            | variable | —   | If required | —                       
+INC         | r32               | 40 + rd    | No       | —        | —              | —        | Yes | No          | —                       
+DEC         | r/m32             | FF /1      | Required | variable | 001            | variable | —   | If required | —                       
+DEC         | r32               | 48 + rd    | No       | —        | —              | —        | Yes | No          | —                       
+JMP         | rel32             | E9 cd      | No       | —        | —              | —        | —   | No          | cd                      
+JMP         | r/m32             | FF /4      | Required | variable | 100            | variable | —   | If required | —                       
+JZ          | rel32             | 0F 84 cd   | No       | —        | —              | —        | —   | No          | cd                      
+JNZ         | rel32             | 0F 85 cd   | No       | —        | —              | —        | —   | No          | cd                      
+CALL        | rel32             | E8 cd      | No       | —        | —              | —        | —   | No          | cd                      
+CALL        | r/m32             | FF /2      | Required | variable | 010            | variable | —   | If required | —                       
+RET         | —                 | C3         | No       | —        | —              | —        | —   | No          | —                       
+===== TABLE END =====
+
+
