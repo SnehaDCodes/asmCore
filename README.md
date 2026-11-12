@@ -1,241 +1,73 @@
-# IA-32 Opcode Analyzer
+AsmCore - IA-32 Opcode Analyzer
 
-## Team Name
+Team Members
 
-AsmCore
+Sneha Deshmukh (25111055)
+Abhishek Patare (25111001)
+Karan Ahire (25111004)
+Sangam Nirmal (25111038)
 
-## Team Members
+Team Name: AsmCore
 
-- Sneha Deshmukh - 25111055
-- Abhishek Patare - 25111001
-- Karan Ahire - 25111004
-- Sangam Nirmal - 25111038
+GitHub Repository:https://github.com/SnehaDCodes/asmCore.git
 
-## GitHub Repository
-
-[https://github.com/SnehaDCodes/asmCore.git](https://github.com/SnehaDCodes/asmCore.git)
-
-## Introduction
-
-This project is an IA-32 (32-bit) opcode analyzer developed using C++.
-
-The program takes two input files:
-
-1. Opcode file
-2. Assembly program file
-
-The opcode file contains information about IA-32 instructions and their opcodes. The program reads the mnemonics from this file and stores them in a Binary Search Tree (BST).
-
-The assembly program file contains assembly instructions. The program reads the instructions and identifies the mnemonic and operands used in each instruction.
-
-## Objectives
-
-The main objectives of this project are:
-
-- Read the opcode table from a file.
-- Store instruction mnemonics in a Binary Search Tree.
-- Display the mnemonics.
-- Display the Binary Search Tree.
-- Search for a particular mnemonic.
-- Read an assembly program from a file.
-- Identify operands used in the assembly program.
-- Identify the type of each operand.
-
-## Data Structure Used
-
-A Binary Search Tree is used to store the instruction mnemonics.
-
-Each node contains:
-
-- Mnemonic
-- Left pointer
-- Right pointer
-
-The mnemonics are inserted alphabetically into the tree.
-
-## Operand Types
-
-The program identifies the following types of operands:
-
-| Operand             | Type     |
-| ------------------- | -------- |
-| EAX, EBX, ECX, etc. | Register |
-| 10, 20, -5, etc.    | Constant |
-| [EAX], [EBX], etc.  | Memory   |
-| VALUE, LABEL, etc.  | Symbol   |
-
-The registers supported by the program are:
-
-```text
-EAX
-ECX
-EDX
-EBX
-ESP
-EBP
-ESI
-EDI
-```
-
-## Program Features
-
-### 1. Display Mnemonics
-
-Displays all mnemonics stored in the Binary Search Tree using inorder traversal.
-
-### 2. Display BST
-
-Displays the structure of the Binary Search Tree.
-
-### 3. Search Mnemonic
-
-The user can enter a mnemonic and check whether it is present in the opcode table.
-
+About the Project
+This project is based on IA-32 (32-bit) assembly language. It is developed in C++.
+The program takes an opcode data file and an assembly program file as input. It reads the instructions from the opcode file and
+stores the mnemonics in a Binary Search Tree (BST). It then reads the assembly program and checks its instructions and operands.
+The project also includes a one-pass assembler part for generating object-code output for the supported instructions.
+What the Program Does
+Reads the opcode information from a text file.
+Stores instruction mnemonics in a BST.
+Displays the mnemonics in sorted order.
+Displays the BST.
+Searches for a given mnemonic.
+Reads an assembly program from a file.
+Identifies operands and their types.
+Displays the symbol table.
+Runs the one-pass assembler.
+Displays macro tables and expanded output.
+Operand Types
+The program identifies these operand types:
+Example Type
+ EAX, EBX, ECX Register 10, 20, -5 Constant [EAX], [EBX] Memory VALUE, LABEL Symbol
+Input Files
+The program needs two input files:
+opcode_data.txt - contains the opcode table.
+assembly.asm - contains the assembly instructions to be checked.
+Enter the correct file names when the program asks for them.
+How to Compile
+Open the terminal in the folder containing the C++ file and compile it using:
+g++ -std=c++11 Assignment7.cpp -o asmcore
+ How to Run
+On Linux:
+./asmcore
+ On Windows:.\asmcore.exe
+ The program will ask for the opcode file name and the assembly program file name.
 Example:
-
-```text
-Enter mnemonic to search: MOV
-
-MOV found.
-```
-
-If the mnemonic is not present:
-
-```text
-Enter mnemonic to search: PUSH
-
-PUSH not found.
-```
-
-### 4. Display Operands and Their Types
-
-The program reads the assembly program and displays the operands along with their types.
-
-Example:
-
-```text
-Line 1: MOV EAX, EBX
-Mnemonic: MOV
-EAX -> Register
-EBX -> Register
-```
-
-## Input Files
-
-The program requires two input files.
-
-### Opcode File
-
-The opcode file contains the IA-32 instruction and encoding information.
-
-It includes instructions such as:
-
-```text
-MOV
-ADD
-SUB
-AND
-OR
-XOR
-CMP
-NOT
-MUL
-IMUL
-DIV
-INC
-DEC
-JMP
-JZ
-JNZ
-CALL
-RET
-```
-
-### Assembly File
-
-The assembly file contains the sample assembly program that needs to be analyzed.
-
-## How to Compile
-
-Open the terminal in the project folder and run:
-
-```bash
-g++ opcode.cpp -o opcode
-```
-
-For C++11:
-
-```bash
-g++ -std=c++11 opcode.cpp -o opcode
-```
-
-## How to Run
-
-Run the program using:
-
-```bash
-./opcode
-```
-
-The program will ask for the opcode file name:
-
-```text
-Enter opcode file name:
-```
-
-Enter the opcode file name, for example:
-
-```text
-opcode_data.txt
-```
-
-Then enter the assembly file name:
-
-```text
-Enter assembly program file name:
-```
-
-For example:
-
-```text
-assembly.asm
-```
-
-## Menu
-
-After entering the files, the following menu is displayed:
-
-```text
+Enter opcode file name: opcode_data.txt
+Enter assembly file name: assembly.asm
+ Menu Options
+The program provides the following options:
 1. Display Mnemonics
 2. Display BST
 3. Search Mnemonic
 4. Display Operands and Their Types
-5. Exit
-```
-
-Enter the required option number.
-
-## Project Structure
-
-```text
-AsmCore/
-│
-├── README.md
-├── opcode_data.txt
-├── assembly.asm
-└── opcode.cpp
-```
-
-## Technologies Used
-
-- C++
-- Binary Search Tree
-- File Handling
-- String Processing
-- Assembly Language
-- IA-32 Instruction Set
-- Ubuntu/Linux
-
-## Conclusion
-
-This project helped us understand the basic concepts of IA-32 instructions, opcode tables, assembly programs and Binary Search Trees.
+5. Display Symbol Table
+6. Run One-Pass Assembler
+7. Display Macro Tables (MNT / MDT / Expansion)
+8. Exit
+ Choose an option by entering its number.
+Output Files
+The assembler generates these files:
+object.txt - contains the generated object-code output.
+error.txt - contains errors found while assembling the program.
+Technologies Used
+C++
+IA-32 Assembly Language
+Binary Search Tree
+File Handling
+String Processing
+Conclusion
+Through this project, we worked with opcode tables, assembly instructions, operands and Binary Search Trees. We also implemented
+parts of a one-pass assembler and macro processing
